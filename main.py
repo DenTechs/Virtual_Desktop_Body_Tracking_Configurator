@@ -268,25 +268,37 @@ class MainWindow(QMainWindow):
         # with open("output.json", "w") as outfile:
         #     json.dump(export_dict, indent=2, fp=outfile)
                 
-           
-        with open("C:/Program Files (x86)/Steam/config/steamvr.vrsettings", "r+") as settings:
-            
-            temp = json.load(settings)
-            
-            with open("C:/Program Files (x86)/Steam/config/steamvr.vrsettings.backup", "w") as backup:
-                json.dump(temp, fp=backup)
-                backup.close()
-            
-            temp["driver_VirtualDesktop"] = export_dict
-            #print(temp)
-            settings.seek(0)
-            json.dump(temp, indent=3, fp=settings)
-            settings.truncate()
-            settings.close()
-            
+        try:   
+            with open("C:/Program Files (x86)/Steam/config/steamvr.vrsettings", "r+") as settings:
+                
+                temp = json.load(settings)
+                try:
+                    with open("C:/Program Files (x86)/Steam/config/steamvr.vrsettings.backup", "x") as backup:
+                        json.dump(temp, fp=backup)
+                        backup.close()
+                except:
+                    ()
+                
+                temp["driver_VirtualDesktop"] = export_dict
+                #print(temp)
+                settings.seek(0)
+                json.dump(temp, indent=3, fp=settings)
+                settings.truncate()
+                settings.close()
+                
+                dlg = QMessageBox(self)
+                dlg.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
+                dlg.setText("Successfully Exported to SteamVR!\nBackup of Original Is Saved At C:/Program Files (x86)/Steam/config/steamvr.vrsettings.backup")
+                
+                dlg.exec()
+                
+                if QMessageBox.StandardButton.Ok:
+                    app.exit()
+
+        except Exception as e:
             dlg = QMessageBox(self)
             dlg.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
-            dlg.setText("Successfully Exported to SteamVR!\nBackup Saved to C:/Program Files (x86)/Steam/config/steamvr.vrsettings.backup")
+            dlg.setText(f"Error: {e}")
             
             dlg.exec()
             
