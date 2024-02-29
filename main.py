@@ -75,7 +75,7 @@ class MainWindow(QMainWindow):
         self.elbows.clicked.connect(self.elbows_only_clicked)
         layoutTab1.addWidget(self.elbows, 0, 2)
         
-        self.defaults = QPushButton("Reset to Defaults")
+        self.defaults = QPushButton("Reset Enabled Trackers to Defaults")
         self.defaults.clicked.connect(self.reset_clicked)
         layoutTab1.addWidget(self.defaults, 17, 0)
         
