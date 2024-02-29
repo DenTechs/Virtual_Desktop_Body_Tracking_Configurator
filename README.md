@@ -2,6 +2,7 @@
 
 Simple tool to easily configure Virtual Desktop's Emulated Tracker settings
 
+If you have any issues, feel free to create an Issue page or contact me on discord with the username @dentechs
 
 ![1](https://github.com/DenTechs/Virtual_Desktop_Body_Tracking_Configurator/assets/48604154/938c3fe1-e3e6-42d6-8f77-f0bcef22eb18)
 ![2](https://github.com/DenTechs/Virtual_Desktop_Body_Tracking_Configurator/assets/48604154/2003843c-93bc-41bf-813f-2536bd212056)
