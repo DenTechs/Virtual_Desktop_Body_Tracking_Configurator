@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QVBoxLayout, QWidget, QPushButton, QCheckBox, QGridLayout, QComboBox, QDoubleSpinBox, QTabWidget, QSpacerItem, QSizePolicy, QMessageBox
+from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QCheckBox, QGridLayout, QComboBox, QDoubleSpinBox, QTabWidget, QSpacerItem, QSizePolicy, QMessageBox
 import json
 from iobt_options import default_enabled, default_rotations, default_toggles, default_misc
 import psutil
