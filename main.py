@@ -2,6 +2,8 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPu
 import json
 from iobt_options import default_enabled, default_rotations, default_toggles, default_misc
 import psutil
+import winreg
+
 
 
 class MainWindow(QMainWindow):
@@ -20,6 +22,25 @@ class MainWindow(QMainWindow):
                 
                 if QMessageBox.StandardButton.Ok:
                     exit()
+        
+        self.steam = ""
+        try:
+            location = winreg.HKEY_LOCAL_MACHINE
+            path = winreg.OpenKeyEx(location, r"SOFTWARE\Wow6432Node\Valve\Steam")
+            self.steam = winreg.QueryValueEx(path, "InstallPath")[0]
+            self.steam = self.steam.replace("\\","/")
+            if path:
+                winreg.CloseKey(path)
+        except Exception as e:
+            dlg2 = QMessageBox()
+            dlg2.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
+            dlg2.setText(f"Error: {e}")
+            
+            dlg2.exec()
+            
+            if QMessageBox.StandardButton.Ok:
+                exit()
+        
         
         self.checkboxes = {}
         self.offsets = {}   
@@ -269,11 +290,11 @@ class MainWindow(QMainWindow):
         #     json.dump(export_dict, indent=2, fp=outfile)
                 
         try:   
-            with open("C:/Program Files (x86)/Steam/config/steamvr.vrsettings", "r+") as settings:
+            with open(f"{self.steam}/config/steamvr.vrsettings", "r+") as settings:
                 
                 temp = json.load(settings)
                 try:
-                    with open("C:/Program Files (x86)/Steam/config/steamvr.vrsettings.backup", "x") as backup:
+                    with open(f"{self.steam}/config/steamvr.vrsettings.backup", "x") as backup:
                         json.dump(temp, fp=backup)
                         backup.close()
                 except:
@@ -288,7 +309,7 @@ class MainWindow(QMainWindow):
                 
                 dlg = QMessageBox(self)
                 dlg.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
-                dlg.setText("Successfully Exported to SteamVR!\nBackup of Original Is Saved At C:/Program Files (x86)/Steam/config/steamvr.vrsettings.backup")
+                dlg.setText(f"Successfully exported to SteamVR!\nBackup of original is saved at: {self.steam}/config/steamvr.vrsettings.backup")
                 
                 dlg.exec()
                 
