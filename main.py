@@ -291,14 +291,17 @@ class MainWindow(QMainWindow):
                         ()
             
         except Exception as e:
-            dlg2 = QMessageBox()
-            dlg2.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
-            dlg2.setText(f"Error: {e}")
-            
-            dlg2.exec()
-            
-            if QMessageBox.StandardButton.Ok:
-                exit()
+            if str(e) == r"'driver_VirtualDesktop'":
+                ()
+            else:
+                dlg2 = QMessageBox()
+                dlg2.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
+                dlg2.setText(f"Error: {e}")
+                
+                dlg2.exec()
+                
+                if QMessageBox.StandardButton.Ok:
+                    exit()
 
         
             
