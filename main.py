@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QCheckBox, QGridLayout, QComboBox, QDoubleSpinBox, QTabWidget, QSpacerItem, QSizePolicy, QMessageBox
 import json
-from iobt_options import default_enabled, default_rotations, default_toggles, default_misc
+from iobt_options import default_enabled, default_offsets, default_toggles, default_misc
 import psutil
 import winreg
 
@@ -99,6 +99,18 @@ class MainWindow(QMainWindow):
         self.defaults = QPushButton("Reset Enabled Trackers to Defaults")
         self.defaults.clicked.connect(self.reset_clicked)
         layoutTab1.addWidget(self.defaults, 17, 0)
+
+        self.load = QPushButton("Load Current Settings")
+        self.load.clicked.connect(self.load_settings_clicked)
+        layoutTab1.addWidget(self.load, 17, 1)
+
+        self.load2 = QPushButton("Load Current Settings")
+        self.load2.clicked.connect(self.load_settings_clicked)
+        self.layoutTab2.addWidget(self.load2, 4, 0)
+
+        self.load3 = QPushButton("Load Current Settings")
+        self.load3.clicked.connect(self.load_settings_clicked)
+        layoutTab3.addWidget(self.load3)
         
         self.export = QPushButton("Export Settings (All Pages)")
         self.export.clicked.connect(self.export_clicked)
@@ -106,11 +118,12 @@ class MainWindow(QMainWindow):
         
         self.export2 = QPushButton("Export Settings (All Pages)")
         self.export2.clicked.connect(self.export_clicked)
-        self.layoutTab2.addWidget(self.export2, 4, 0)
+        self.layoutTab2.addWidget(self.export2, 5, 0)
         
         self.export3 = QPushButton("Export Settings (All Pages)")
         self.export3.clicked.connect(self.export_clicked)
         layoutTab3.addWidget(self.export3, 10)
+        
         
         first = 0
         row = 3
@@ -154,7 +167,7 @@ class MainWindow(QMainWindow):
                     box.setMinimum(-360)
                     box.setSingleStep(90)
                     try:
-                        box.setValue(default_rotations[f"{variable[:-8]}_rot_{axis[-1].lower()}"])
+                        box.setValue(default_offsets[f"{variable[:-8]}_rot_{axis[-1].lower()}"])
                     except:
                         ()
                 else:
@@ -243,6 +256,53 @@ class MainWindow(QMainWindow):
                 checkbox.setChecked(True)
             else:
                 checkbox.setChecked(False) 
+
+    def load_settings_clicked(self):
+        try:
+            with open(f"{self.steam}/config/steamvr.vrsettings", "r") as file:
+                current = json.load(file)["driver_VirtualDesktop"]
+                
+                for variable in default_enabled:
+                    try:
+                        self.checkboxes[variable].setChecked(current[variable])
+                    except:
+                        ()
+                    
+                for variable in default_enabled:
+                    for axis in ["Translate X", "Translate Y", "Translate Z", "Rotate X", "Rotate Y", "Rotate Z"]:
+                        try:                
+                            if axis[:-2] == "Rotate":
+                                self.offsets[variable][axis].setValue(current[f"{variable[:-8]}_rot_{axis[-1].lower()}"])
+                            else:
+                                self.offsets[variable][axis].setValue(current[f"{variable[:-8]}_offset_{axis[-1].lower()}"])
+                        except:
+                            ()
+
+                for variable in default_misc:
+                    try:
+                        self.misc[variable].setValue(current[variable])
+                    except:
+                        ()
+
+                for variable in default_toggles:
+                    try:
+                        self.misc[variable].setChecked(current[variable])
+                    except:
+                        ()
+            
+        except Exception as e:
+            dlg2 = QMessageBox()
+            dlg2.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
+            dlg2.setText(f"Error: {e}")
+            
+            dlg2.exec()
+            
+            if QMessageBox.StandardButton.Ok:
+                exit()
+
+        
+            
+
         
     def export_clicked(self):
         #print("Export clicked")
@@ -256,8 +316,8 @@ class MainWindow(QMainWindow):
             for axis, box in joint.items():
                 if axis[:-2] == "Rotate":
                     try:
-                        if abs(box.value() - default_rotations[f"{variable[:-8]}_rot_{axis[-1].lower()}"]) < 0.001:
-                            break
+                        if abs(box.value() - default_offsets[f"{variable[:-8]}_rot_{axis[-1].lower()}"]) < 0.001:
+                            continue
                         else:
                             export_dict[f"{variable[:-8]}_rot_{axis[-1].lower()}"] = box.value()
                     except:
@@ -265,14 +325,14 @@ class MainWindow(QMainWindow):
                             export_dict[f"{variable[:-8]}_rot_{axis[-1].lower()}"] = box.value()
                 else:
                     try:
-                        if abs(box.value() - default_rotations[f"{variable[:-8]}_offset_{axis[-1].lower()}"]) < 0.001:
-                            break
+                        if abs(box.value() - default_offsets[f"{variable[:-8]}_offset_{axis[-1].lower()}"]) < 0.001:
+                            continue
                         else:
                             export_dict[f"{variable[:-8]}_offset_{axis[-1].lower()}"] = box.value()
                     except:
                         if box.value() >= 0.001:
                             export_dict[f"{variable[:-8]}_offset_{axis[-1].lower()}"] = box.value()
-                    
+
         for variable, input in self.misc.items():
             try:
                 if abs(default_misc[variable] - input.value()) >= 0.001:
