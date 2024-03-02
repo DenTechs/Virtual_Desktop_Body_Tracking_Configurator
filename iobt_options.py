@@ -249,3 +249,12 @@ default_misc = {
     "grip_force_threshold": 0.3
 }
 
+temp_offsets = {
+    "chest_joint_offset_x" : 0.03,
+    "chest_joint_offset_z" : -0.13,
+    "hips_joint_offset_z" : -0.1,
+    "left_arm_lower_joint_offset_x" : 0.13,
+    "left_arm_upper_joint_offset_x" : 0.13,
+    "right_arm_lower_joint_offset_x" : 0.13,
+    "right_arm_upper_joint_offset_x" : 0.13
+}

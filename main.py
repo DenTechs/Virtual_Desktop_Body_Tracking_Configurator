@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QCheckBox, QGridLayout, QComboBox, QDoubleSpinBox, QTabWidget, QSpacerItem, QSizePolicy, QMessageBox
 import json
-from iobt_options import default_enabled, default_offsets, default_toggles, default_misc
+from iobt_options import default_enabled, default_offsets, default_toggles, default_misc, temp_offsets
 import psutil
 import winreg
 
@@ -208,7 +208,7 @@ class MainWindow(QMainWindow):
         tabs.setMovable(True)
 
         tabs.addTab(widgetTab1, "Enabled Trackers")
-        tabs.addTab(widgetTab2, "Tracker Offsets")
+       # tabs.addTab(widgetTab2, "Tracker Offsets")
         tabs.addTab(widgetTab3, "Miscellaneous")
 
         self.setCentralWidget(tabs)
@@ -262,7 +262,7 @@ class MainWindow(QMainWindow):
     def load_settings_clicked(self):
         try:
             with open(f"{self.steam}/config/steamvr.vrsettings", "r") as file:
-                current = json.load(file)["driver_VirtualDesktop"]
+                current = json.load(file)["driver_VirtualDesktop"]                  
                 
                 for variable in default_enabled:
                     try:
@@ -312,6 +312,9 @@ class MainWindow(QMainWindow):
     def export_clicked(self):
         #print("Export clicked")
         export_dict = {}
+
+        for variable in temp_offsets:
+            export_dict[variable] = temp_offsets[variable]
         
         for variable, checkbox in self.checkboxes.items():
            if default_enabled[variable] != checkbox.isChecked():
