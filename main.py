@@ -385,7 +385,7 @@ class MainWindow(QMainWindow):
                 
                 dlg = QMessageBox(self)
                 dlg.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
-                dlg.setText(f"Successfully exported to SteamVR!\nBackup of original is saved at: {self.steam}/config/steamvr.vrsettings.originalbackup\nAnd backup of previous settings is saved at: {self.steam}/config/steamvr.vrsettings.lastbackup")
+                dlg.setText(f"Successfully exported to SteamVR!\nApplied recommended tracker offsets\nBackup of original is saved at: {self.steam}/config/steamvr.vrsettings.originalbackup\nAnd backup of previous settings is saved at: {self.steam}/config/steamvr.vrsettings.lastbackup")
                 
                 dlg.exec()
                 
