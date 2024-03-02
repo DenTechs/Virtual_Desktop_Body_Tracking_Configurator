@@ -171,7 +171,9 @@ class MainWindow(QMainWindow):
                     except:
                         ()
                 else:
-                    box.setSingleStep(0.1)
+                    box.setSingleStep(0.01)
+                    box.setMaximum(1)
+                    box.setMinimum(-1)
                     box.setDecimals(3)                    
                 
                 
@@ -320,7 +322,7 @@ class MainWindow(QMainWindow):
                 if axis[:-2] == "Rotate":
                     try:
                         if abs(box.value() - default_offsets[f"{variable[:-8]}_rot_{axis[-1].lower()}"]) < 0.001:
-                            continue
+                            ()
                         else:
                             export_dict[f"{variable[:-8]}_rot_{axis[-1].lower()}"] = box.value()
                     except:
@@ -329,7 +331,7 @@ class MainWindow(QMainWindow):
                 else:
                     try:
                         if abs(box.value() - default_offsets[f"{variable[:-8]}_offset_{axis[-1].lower()}"]) < 0.001:
-                            continue
+                            ()
                         else:
                             export_dict[f"{variable[:-8]}_offset_{axis[-1].lower()}"] = box.value()
                     except:
@@ -357,7 +359,14 @@ class MainWindow(QMainWindow):
                 
                 temp = json.load(settings)
                 try:
-                    with open(f"{self.steam}/config/steamvr.vrsettings.backup", "x") as backup:
+                    with open(f"{self.steam}/config/steamvr.vrsettings.originalbackup", "x") as backup:
+                        json.dump(temp, fp=backup)
+                        backup.close()
+                except:
+                    ()
+                
+                try:
+                    with open(f"{self.steam}/config/steamvr.vrsettings.lastbackup", "w") as backup:
                         json.dump(temp, fp=backup)
                         backup.close()
                 except:
@@ -372,7 +381,7 @@ class MainWindow(QMainWindow):
                 
                 dlg = QMessageBox(self)
                 dlg.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
-                dlg.setText(f"Successfully exported to SteamVR!\nBackup of original is saved at: {self.steam}/config/steamvr.vrsettings.backup")
+                dlg.setText(f"Successfully exported to SteamVR!\nBackup of original is saved at: {self.steam}/config/steamvr.vrsettings.originalbackup\nAnd backup of previous settings is saved at: {self.steam}/config/steamvr.vrsettings.lastbackup")
                 
                 dlg.exec()
                 
