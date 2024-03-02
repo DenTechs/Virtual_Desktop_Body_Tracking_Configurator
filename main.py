@@ -1,4 +1,6 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QCheckBox, QGridLayout, QComboBox, QDoubleSpinBox, QTabWidget, QSpacerItem, QSizePolicy, QMessageBox
+from PyQt6.QtGui import QFont
+
 import json
 from iobt_options import default_enabled, default_offsets, default_toggles, default_misc, temp_offsets
 import psutil
@@ -11,7 +13,9 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("Virtual Desktop Body Tracking Configurator")
-        
+        font = QFont("Curlz MT", 12)
+        self.setFont(font)
+
         for proc in psutil.process_iter(['name']):
             if "vrserver.exe" in proc.info['name'].lower():
                 dlg2 = QMessageBox()
