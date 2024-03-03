@@ -51,6 +51,7 @@ class MainWindow(QMainWindow):
         
         layoutTab1 = QGridLayout()
         self.layoutTab2 = QGridLayout()
+        self.layoutTab2.setColumnMinimumWidth(1,150)
         layoutTab3 = QVBoxLayout()
 
 
@@ -126,8 +127,9 @@ class MainWindow(QMainWindow):
         self.export3.clicked.connect(self.export_clicked)
         layoutTab3.addWidget(self.export3, 10)
         
-        self.loadRecommended = QPushButton("Load Recommended Offsets")
-        self.loadRecommended.clicked.connect(self.loadRecommended_clicked)
+        self.loadRecommended = QCheckBox("Apply Recommended Offsets\n(Overrides some offsets)")
+        self.loadRecommended.setChecked(True)
+        self.loadRecommended.clicked.connect(self.checkbox_interacted)
         self.layoutTab2.addWidget(self.loadRecommended, 3, 0)
         
         first = 0
@@ -226,15 +228,7 @@ class MainWindow(QMainWindow):
         for axis in ["Translate X", "Translate Y", "Translate Z", "Rotate X", "Rotate Y", "Rotate Z"]:
             self.stackedwidgets[axis].setCurrentIndex(index)
             i+=1
-        
-    def loadRecommended_clicked(self):
-        for variable in default_enabled:
-            for axis in ["Translate X", "Translate Y", "Translate Z"]:
-                try:
-                    self.offsets[variable][axis].setValue(temp_offsets[f"{variable[0:-8]}_offset_{axis[-1].lower()}"])
-                except:
-                    ()
-        
+                
     def checkbox_interacted(self, checkbox):
         ()
         #print(f"{checkbox.text()} is {checkbox.isChecked()}")
@@ -336,6 +330,9 @@ class MainWindow(QMainWindow):
         #print("Export clicked")
         export_dict = {}
 
+        if self.loadRecommended.isChecked():
+            for variable in temp_offsets:
+                export_dict[variable] = temp_offsets[variable]
                 
         for variable, checkbox in self.checkboxes.items():
            if default_enabled[variable] != checkbox.isChecked():
