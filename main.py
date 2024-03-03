@@ -127,7 +127,7 @@ class MainWindow(QMainWindow):
         self.export3.clicked.connect(self.export_clicked)
         layoutTab3.addWidget(self.export3, 10)
         
-        self.loadRecommended = QCheckBox("Apply Recommended Offsets\n(Overrides some offsets)")
+        self.loadRecommended = QCheckBox("Apply Recommended Offsets\n(Does not override custom offsets)")
         self.loadRecommended.setChecked(True)
         self.loadRecommended.clicked.connect(self.checkbox_interacted)
         self.layoutTab2.addWidget(self.loadRecommended, 3, 0)
