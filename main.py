@@ -425,7 +425,7 @@ class MainWindow(QMainWindow):
 
 app = QApplication([])
 
-qdarktheme.setup_theme()
+qdarktheme.setup_theme(additional_qss="QToolTip { border: 0px; }")
 
 window = MainWindow()
 window.show()
