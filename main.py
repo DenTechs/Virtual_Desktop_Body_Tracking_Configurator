@@ -3,6 +3,7 @@ import json
 from iobt_options import default_enabled, default_offsets, default_toggles, default_misc, temp_offsets, tooltips_enabled
 import psutil
 import winreg
+import qdarktheme
 
 
 
@@ -331,7 +332,7 @@ class MainWindow(QMainWindow):
                 if QMessageBox.StandardButton.Ok:
                     exit()
         
-        
+
         #print("Export clicked")
         export_dict = {}
 
@@ -423,6 +424,8 @@ class MainWindow(QMainWindow):
             
 
 app = QApplication([])
+
+qdarktheme.setup_theme()
 
 window = MainWindow()
 window.show()
