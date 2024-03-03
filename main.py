@@ -216,7 +216,6 @@ class MainWindow(QMainWindow):
 
         tabs.addTab(widgetTab1, "Enabled Trackers")
         tabs.addTab(widgetTab2, "Tracker Offsets")
-        #tabs.setTabEnabled(1, False)
         tabs.addTab(widgetTab3, "Miscellaneous")
 
         self.setCentralWidget(tabs)
