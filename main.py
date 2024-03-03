@@ -17,7 +17,7 @@ class MainWindow(QMainWindow):
             if "vrserver.exe" in proc.info['name'].lower():
                 dlg2 = QMessageBox()
                 dlg2.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
-                dlg2.setText("Error!\nvrserver.exe running!\nPlease close SteamVR and try again")
+                dlg2.setText("Error!\n\nvrserver.exe running!\n\nPlease close SteamVR and try again")
                 
                 dlg2.exec()
                 
@@ -115,15 +115,18 @@ class MainWindow(QMainWindow):
         self.load3.clicked.connect(self.load_settings_clicked)
         layoutTab3.addWidget(self.load3)
         
-        self.export = QPushButton("Export Settings (All Pages)")
+        self.export = QPushButton("Apply Settings (All Pages)")
+        self.export.setStyleSheet("QPushButton {background-color: rgb(0,200,0); color: black} QPushButton:hover {background-color: rgb(0,200,150)}")
         self.export.clicked.connect(self.export_clicked)
         layoutTab1.addWidget(self.export, 17, 2)
         
-        self.export2 = QPushButton("Export Settings (All Pages)")
+        self.export2 = QPushButton("Apply Settings (All Pages)")
+        self.export2.setStyleSheet("QPushButton {background-color: rgb(0,200,0); color: black} QPushButton:hover {background-color: rgb(0,200,150)}")
         self.export2.clicked.connect(self.export_clicked)
         self.layoutTab2.addWidget(self.export2, 5, 0)
         
-        self.export3 = QPushButton("Export Settings (All Pages)")
+        self.export3 = QPushButton("Apply Settings (All Pages)")
+        self.export3.setStyleSheet("QPushButton {background-color: rgb(0,200,0); color: black} QPushButton:hover {background-color: rgb(0,200,150)}")
         self.export3.clicked.connect(self.export_clicked)
         layoutTab3.addWidget(self.export3, 10)
         
@@ -319,7 +322,7 @@ class MainWindow(QMainWindow):
             if "vrserver.exe" in proc.info['name'].lower():
                 dlg2 = QMessageBox()
                 dlg2.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
-                dlg2.setText("Error!\nvrserver.exe running!\nPlease close SteamVR and try again")
+                dlg2.setText("Error!\n\nvrserver.exe running!\n\nPlease close SteamVR and try again")
                 
                 dlg2.exec()
                 
@@ -402,7 +405,7 @@ class MainWindow(QMainWindow):
                 
                 dlg = QMessageBox(self)
                 dlg.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
-                dlg.setText(f"Successfully exported to SteamVR!\nBackup of original is saved at: {self.steam}/config/steamvr.vrsettings.originalbackup\nAnd backup of previous settings is saved at: {self.steam}/config/steamvr.vrsettings.lastbackup")
+                dlg.setText(f"Successfully exported to SteamVR!\n\nBackup of original is saved at: {self.steam}/config/steamvr.vrsettings.originalbackup\n\nAnd backup of previous settings is saved at: {self.steam}/config/steamvr.vrsettings.lastbackup")
                 
                 dlg.exec()
                 
