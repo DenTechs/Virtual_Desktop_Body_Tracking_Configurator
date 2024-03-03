@@ -1,6 +1,6 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QCheckBox, QGridLayout, QComboBox, QDoubleSpinBox, QTabWidget, QSpacerItem, QSizePolicy, QMessageBox
+from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QCheckBox, QGridLayout, QComboBox, QDoubleSpinBox, QTabWidget, QSpacerItem, QSizePolicy, QMessageBox, QStackedWidget
 import json
-from iobt_options import default_enabled, default_offsets, default_toggles, default_misc, temp_offsets
+from iobt_options import default_enabled, default_offsets, default_toggles, default_misc, temp_offsets, tooltips_enabled
 import psutil
 import winreg
 
@@ -45,6 +45,7 @@ class MainWindow(QMainWindow):
         self.checkboxes = {}
         self.offsets = {}   
         self.misc = {}
+        self.stackedwidgets = {}
         
         
         layoutTab1 = QGridLayout()
@@ -124,6 +125,9 @@ class MainWindow(QMainWindow):
         self.export3.clicked.connect(self.export_clicked)
         layoutTab3.addWidget(self.export3, 10)
         
+        self.loadRecommended = QPushButton("Load Recommended Offsets")
+        self.loadRecommended.clicked.connect(self.loadRecommended_clicked)
+        self.layoutTab2.addWidget(self.loadRecommended, 3, 0)
         
         first = 0
         row = 3
@@ -132,6 +136,7 @@ class MainWindow(QMainWindow):
             button = QCheckBox(variable[:-8].replace("_", " ").title())
             button.setCheckable(True)
             button.setChecked(default_enabled.get(variable))
+            button.setToolTip(tooltips_enabled[variable])
             button.clicked.connect(lambda checked, b=button: self.checkbox_interacted(b))
             
             self.checkboxes[variable] = button
@@ -150,9 +155,12 @@ class MainWindow(QMainWindow):
             
         self.dropdown = QComboBox()
             
+        for axis in ["Translate X", "Translate Y", "Translate Z", "Rotate X", "Rotate Y", "Rotate Z"]:
+            self.stackedwidgets[axis] = QStackedWidget()
+
         row = 0
         column = 0
-        for variable in default_enabled: 
+        for variable in default_enabled:        
 
             self.dropdown.addItem(variable[:-8].replace("_", " ").title())
             
@@ -178,7 +186,7 @@ class MainWindow(QMainWindow):
                 
                 
                 self.offsets[variable][axis] = box
-                
+                self.stackedwidgets[axis].addWidget(box)
                 #layoutTab2.addWidget(box, row, column)
 
                 row += 1
@@ -186,14 +194,13 @@ class MainWindow(QMainWindow):
                 if row >= 9:
                     row = 0
                     column += 1
+
+
+        self.layoutTab2.addWidget(self.dropdown, 2, 0)
         
-
-
-
-        self.layoutTab2.addWidget(self.dropdown, 3, 0)
         i=1
         for axis in ["Translate X", "Translate Y", "Translate Z", "Rotate X", "Rotate Y", "Rotate Z"]:
-            self.layoutTab2.addWidget(self.offsets[list(default_enabled.keys())[0]][axis],i,2   )
+            self.layoutTab2.addWidget(self.stackedwidgets[axis], i, 2)
             i+=1
         self.dropdown.currentIndexChanged.connect(self.offset_index_changed)
 
@@ -209,22 +216,24 @@ class MainWindow(QMainWindow):
 
         tabs.addTab(widgetTab1, "Enabled Trackers")
         tabs.addTab(widgetTab2, "Tracker Offsets")
-        tabs.setTabEnabled(1, False)
+        #tabs.setTabEnabled(1, False)
         tabs.addTab(widgetTab3, "Miscellaneous")
 
         self.setCentralWidget(tabs)
-        
-        
-        
+          
     def offset_index_changed(self, index):
         i=1
         for axis in ["Translate X", "Translate Y", "Translate Z", "Rotate X", "Rotate Y", "Rotate Z"]:
-            self.layoutTab2.addWidget(self.offsets[list(default_enabled.keys())[index]][axis],i,2)
+            self.stackedwidgets[axis].setCurrentIndex(index)
             i+=1
         
-        
-        #print(index)
-    
+    def loadRecommended_clicked(self):
+        for variable in default_enabled:
+            for axis in ["Translate X", "Translate Y", "Translate Z"]:
+                try:
+                    self.offsets[variable][axis].setValue(temp_offsets[f"{variable[0:-8]}_offset_{axis[-1].lower()}"])
+                except:
+                    ()
         
     def checkbox_interacted(self, checkbox):
         ()
@@ -314,9 +323,7 @@ class MainWindow(QMainWindow):
         #print("Export clicked")
         export_dict = {}
 
-        for variable in temp_offsets:
-            export_dict[variable] = temp_offsets[variable]
-        
+                
         for variable, checkbox in self.checkboxes.items():
            if default_enabled[variable] != checkbox.isChecked():
                 export_dict[variable] = checkbox.isChecked()
