@@ -319,6 +319,19 @@ class MainWindow(QMainWindow):
 
         
     def export_clicked(self):
+
+        for proc in psutil.process_iter(['name']):
+            if "vrserver.exe" in proc.info['name'].lower():
+                dlg2 = QMessageBox()
+                dlg2.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
+                dlg2.setText("Error!\nvrserver.exe running!\nPlease close SteamVR and try again")
+                
+                dlg2.exec()
+                
+                if QMessageBox.StandardButton.Ok:
+                    exit()
+        
+        
         #print("Export clicked")
         export_dict = {}
 
