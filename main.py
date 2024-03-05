@@ -13,16 +13,15 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("Virtual Desktop Body Tracking Configurator")
         
-        for proc in psutil.process_iter(['name']):
-            if "vrserver.exe" in proc.info['name'].lower():
-                dlg2 = QMessageBox()
-                dlg2.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
-                dlg2.setText("Error!\n\nvrserver.exe running!\n\nPlease close SteamVR and try again")
-                
-                dlg2.exec()
-                
-                if QMessageBox.StandardButton.Ok:
-                    exit()
+        if "vrserver.exe" in (p.name() for p in psutil.process_iter()):
+            dlg2 = QMessageBox()
+            dlg2.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
+            dlg2.setText("Error!\n\nvrserver.exe running!\n\nPlease close SteamVR and try again")
+            
+            dlg2.exec()
+            
+            if QMessageBox.StandardButton.Ok:
+                exit()
         
         self.steam = ""
         try:
@@ -58,10 +57,8 @@ class MainWindow(QMainWindow):
         for variable in default_toggles:
             button = QCheckBox(variable.replace("_", " ").title())
             button.setCheckable(True)
-            button.setChecked(default_toggles.get(variable))
-            
-            self.misc[variable] = button
-            
+            button.setChecked(default_toggles.get(variable))     
+            self.misc[variable] = button      
             layoutTab3.addWidget(button)
             
         for variable in default_misc:
@@ -71,13 +68,9 @@ class MainWindow(QMainWindow):
             box.setMaximum(1)
             box.setSingleStep(0.05)
             box.setDecimals(3)
-            box.setValue(default_misc[variable])
-            
-            self.misc[variable] = box
-            
+            box.setValue(default_misc[variable])            
+            self.misc[variable] = box   
             layoutTab3.addWidget(box)      
-
-
         
         spacer = QSpacerItem(20, 20, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
         spacer2 = QSpacerItem(100, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
@@ -318,16 +311,16 @@ class MainWindow(QMainWindow):
         
     def export_clicked(self):
 
-        for proc in psutil.process_iter(['name']):
-            if "vrserver.exe" in proc.info['name'].lower():
-                dlg2 = QMessageBox()
-                dlg2.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
-                dlg2.setText("Error!\n\nvrserver.exe running!\n\nPlease close SteamVR and try again")
-                
-                dlg2.exec()
-                
-                if QMessageBox.StandardButton.Ok:
-                    exit()
+
+        if "vrserver.exe" in (p.name() for p in psutil.process_iter()):
+            dlg2 = QMessageBox()
+            dlg2.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
+            dlg2.setText("Error!\n\nvrserver.exe running!\n\nPlease close SteamVR and try again")
+            
+            dlg2.exec()
+            
+            if QMessageBox.StandardButton.Ok:
+                exit()
         
 
         #print("Export clicked")
