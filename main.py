@@ -2,8 +2,8 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPu
 import json
 from iobt_options import default_enabled, default_offsets, default_toggles, default_misc, temp_offsets, tooltips_enabled
 import psutil
-import winreg
 import qdarktheme
+import os
 
 
 
@@ -18,31 +18,22 @@ class MainWindow(QMainWindow):
                 dlg2 = QMessageBox()
                 dlg2.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
                 dlg2.setText("Error!\n\nvrserver.exe running!\n\nPlease close SteamVR and try again")
-                
                 dlg2.exec()
-                
                 if QMessageBox.StandardButton.Ok:
                     exit()
         
         self.steam = ""
         try:
-            location = winreg.HKEY_LOCAL_MACHINE
-            path = winreg.OpenKeyEx(location, r"SOFTWARE\Wow6432Node\Valve\Steam")
-            self.steam = winreg.QueryValueEx(path, "InstallPath")[0]
-            self.steam = self.steam.replace("\\","/")
-            if path:
-                winreg.CloseKey(path)
+            with open(f"{os.getenv('LOCALAPPDATA')}\\openvr\\openvrpaths.vrpath", "r") as file:
+                self.steam = json.load(file)["config"][0].replace("\\", "/")
         except Exception as e:
             dlg2 = QMessageBox()
             dlg2.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
             dlg2.setText(f"Error: {e}")
-            
             dlg2.exec()
-            
             if QMessageBox.StandardButton.Ok:
                 exit()
-        
-        
+      
         self.checkboxes = {}
         self.offsets = {}   
         self.misc = {}
@@ -268,7 +259,7 @@ class MainWindow(QMainWindow):
 
     def load_settings_clicked(self):
         try:
-            with open(f"{self.steam}/config/steamvr.vrsettings", "r") as file:
+            with open(f"{self.steam}/steamvr.vrsettings", "r") as file:
                 current = json.load(file)["driver_VirtualDesktop"]                  
                 
                 for variable in default_enabled:
@@ -379,18 +370,18 @@ class MainWindow(QMainWindow):
         #     json.dump(export_dict, indent=2, fp=outfile)
                 
         try:   
-            with open(f"{self.steam}/config/steamvr.vrsettings", "r+") as settings:
+            with open(f"{self.steam}/steamvr.vrsettings", "r+") as settings:
                 
                 temp = json.load(settings)
                 try:
-                    with open(f"{self.steam}/config/steamvr.vrsettings.originalbackup", "x") as backup:
+                    with open(f"{self.steam}/steamvr.vrsettings.originalbackup", "x") as backup:
                         json.dump(temp, fp=backup)
                         backup.close()
                 except:
                     ()
                 
                 try:
-                    with open(f"{self.steam}/config/steamvr.vrsettings.lastbackup", "w") as backup:
+                    with open(f"{self.steam}/steamvr.vrsettings.lastbackup", "w") as backup:
                         json.dump(temp, fp=backup)
                         backup.close()
                 except:
@@ -405,7 +396,7 @@ class MainWindow(QMainWindow):
                 
                 dlg = QMessageBox(self)
                 dlg.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
-                dlg.setText(f"Successfully exported to SteamVR!\n\nBackup of original is saved at: {self.steam}/config/steamvr.vrsettings.originalbackup\n\nAnd backup of previous settings is saved at: {self.steam}/config/steamvr.vrsettings.lastbackup")
+                dlg.setText(f"Successfully exported to SteamVR!\n\nBackup of original is saved at: {self.steam}/steamvr.vrsettings.originalbackup\n\nAnd backup of previous settings is saved at: {self.steam}/steamvr.vrsettings.lastbackup")
                 
                 dlg.exec()
                 
