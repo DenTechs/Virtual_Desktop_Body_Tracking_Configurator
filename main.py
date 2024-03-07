@@ -1,11 +1,9 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QCheckBox, QGridLayout, QComboBox, QDoubleSpinBox, QTabWidget, QSpacerItem, QSizePolicy, QMessageBox, QStackedWidget
 import json
 from iobt_options import default_enabled, default_offsets, default_toggles, default_misc, temp_offsets, tooltips_enabled
-import psutil
 import qdarktheme
 import os
 import subprocess
-
 
 def process_exists(process_name):
     call = 'TASKLIST', '/FI', 'imagename eq %s' % process_name
@@ -35,7 +33,7 @@ class MainWindow(QMainWindow):
         
         self.steam = ""
         try:
-            with open(f"{os.getenv('LOCALAPPDATA')}\\openvr\\openvrpaths.vrpath", "r") as file:
+            with open(f"{os.getenv('LOCALAPPDATA')}\\openvr\\openvrpaths.vrpath", "r", encoding="utf-8") as file:
                 self.steam = json.load(file)["config"][0].replace("\\", "/")
         except Exception as e:
             dlg2 = QMessageBox()
@@ -270,7 +268,7 @@ class MainWindow(QMainWindow):
 
     def load_settings_clicked(self):
         try:
-            with open(f"{self.steam}/steamvr.vrsettings", "r") as file:
+            with open(f"{self.steam}/steamvr.vrsettings", "r", encoding="utf-8") as file:
                 current = json.load(file)["driver_VirtualDesktop"]                  
                 
                 for variable in default_enabled:
@@ -374,15 +372,15 @@ class MainWindow(QMainWindow):
                 ()
             
            
-        # with open("output.json", "w") as outfile:
+        # with open("output.json", "w", encoding="utf-8") as outfile:
         #     json.dump(export_dict, indent=2, fp=outfile)
                 
         try:   
-            with open(f"{self.steam}/steamvr.vrsettings", "r+") as settings:
+            with open(f"{self.steam}/steamvr.vrsettings", "r+", encoding="utf-8") as settings:
                 
                 temp = json.load(settings)
                 try:
-                    with open(f"{self.steam}/steamvr.vrsettings.originalbackup", "x") as backup:
+                    with open(f"{self.steam}/steamvr.vrsettings.originalbackup", "x", encoding="utf-8") as backup:
                         json.dump(temp, fp=backup)
                         backup.close()
                 except:
