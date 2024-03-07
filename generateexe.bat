@@ -1,1 +1,1 @@
-pyinstaller --windowed --onefile --name     Virtual_Desktop_Body_Tracking_Configurator main.py
+pyinstaller --windowed --onefile --name Virtual_Desktop_Body_Tracking_Configurator main.py
