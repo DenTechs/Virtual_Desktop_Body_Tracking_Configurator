@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Virtual Desktop Body Tracking Configurator V1.7")
+        self.setWindowTitle("Virtual Desktop Body Tracking Configurator v1.7")
         
         if process_exists("vrserver.exe"):
             dlg2 = QMessageBox()
@@ -88,45 +88,52 @@ class MainWindow(QMainWindow):
         self.layoutTab2.addItem(spacer2,0, 1)
         
         self.upperWithHip = QPushButton("Upper Body (With Hip)")
+        self.upperWithHip.setStyleSheet("QPushButton {background-color: rgb(180,230,255); color: black} QPushButton:hover {background-color: rgb(150,200,235)}")
         self.upperWithHip.clicked.connect(self.Upper_With_Hip_clicked)
         layoutTab1.addWidget(self.upperWithHip, 0, 0)
         
         self.upper = QPushButton("Upper Body Only")
+        self.upper.setStyleSheet("QPushButton {background-color: rgb(180,230,255); color: black} QPushButton:hover {background-color: rgb(150,200,235)}")
         self.upper.clicked.connect(self.upper_only_clicked)
         layoutTab1.addWidget(self.upper, 0, 1)
         
         self.elbows = QPushButton("Elbows Only")
+        self.elbows.setStyleSheet("QPushButton {background-color: rgb(180,230,255); color: black} QPushButton:hover {background-color: rgb(150,200,235)}")
         self.elbows.clicked.connect(self.elbows_only_clicked)
         layoutTab1.addWidget(self.elbows, 0, 2)
         
         self.defaults = QPushButton("Reset Enabled Trackers to Defaults")
+        self.defaults.setStyleSheet("QPushButton {background-color: rgb(100,200,255); color: black} QPushButton:hover {background-color: rgb(70,150,230)}")
         self.defaults.clicked.connect(self.reset_clicked)
         layoutTab1.addWidget(self.defaults, 17, 0)
 
         self.load = QPushButton("Load Current Settings")
+        self.load.setStyleSheet("QPushButton {background-color: rgb(140,220,255); color: black} QPushButton:hover {background-color: rgb(130,190,235)}")
         self.load.clicked.connect(self.load_settings_clicked)
         layoutTab1.addWidget(self.load, 17, 1)
 
         self.load2 = QPushButton("Load Current Settings")
+        self.load2.setStyleSheet("QPushButton {background-color: rgb(140,220,255); color: black} QPushButton:hover {background-color: rgb(130,190,235)}")
         self.load2.clicked.connect(self.load_settings_clicked)
         self.layoutTab2.addWidget(self.load2, 3, 0)
 
         self.load3 = QPushButton("Load Current Settings")
+        self.load3.setStyleSheet("QPushButton {background-color: rgb(140,220,255); color: black} QPushButton:hover {background-color: rgb(130,190,235)}")
         self.load3.clicked.connect(self.load_settings_clicked)
         layoutTab3.addWidget(self.load3)
         
         self.export = QPushButton("Apply Settings (All Pages)")
-        self.export.setStyleSheet("QPushButton {background-color: rgb(0,200,0); color: black} QPushButton:hover {background-color: rgb(0,200,150)}")
+        self.export.setStyleSheet("QPushButton {background-color: rgb(60,250,60); color: black} QPushButton:hover {background-color: rgb(0,200,150)}")
         self.export.clicked.connect(self.export_clicked)
         layoutTab1.addWidget(self.export, 17, 2)
         
         self.export2 = QPushButton("Apply Settings (All Pages)")
-        self.export2.setStyleSheet("QPushButton {background-color: rgb(0,200,0); color: black} QPushButton:hover {background-color: rgb(0,200,150)}")
+        self.export2.setStyleSheet("QPushButton {background-color: rgb(60,250,60); color: black} QPushButton:hover {background-color: rgb(0,200,150)}")
         self.export2.clicked.connect(self.export_clicked)
         self.layoutTab2.addWidget(self.export2, 4, 0)
         
         self.export3 = QPushButton("Apply Settings (All Pages)")
-        self.export3.setStyleSheet("QPushButton {background-color: rgb(0,200,0); color: black} QPushButton:hover {background-color: rgb(0,200,150)}")
+        self.export3.setStyleSheet("QPushButton {background-color: rgb(60,250,60); color: black} QPushButton:hover {background-color: rgb(0,200,150)}")
         self.export3.clicked.connect(self.export_clicked)
         layoutTab3.addWidget(self.export3, 10)
         
