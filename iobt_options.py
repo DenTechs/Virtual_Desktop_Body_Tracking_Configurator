@@ -47,9 +47,9 @@ default_offsets = {
     "neck_joint_rot_x": 90.0,
     "neck_joint_rot_y": 0.0,
     "neck_joint_rot_z": 0.0,
-    "chest_joint_offset_x": 0.0,
+    "chest_joint_offset_x": 0.03,
     "chest_joint_offset_y": 0.0,
-    "chest_joint_offset_z": 0.0,
+    "chest_joint_offset_z": -0.13,
     "chest_joint_rot_x": 90.0,
     "chest_joint_rot_y": 0.0,
     "chest_joint_rot_z": 0.0,
@@ -73,7 +73,7 @@ default_offsets = {
     "spine_lower_joint_rot_z": 0.0,
     "hips_joint_offset_x": 0.0,
     "hips_joint_offset_y": 0.0,
-    "hips_joint_offset_z": 0.0,
+    "hips_joint_offset_z": -0.1,
     "hips_joint_rot_x": 90.0,
     "hips_joint_rot_y": 0.0,
     "hips_joint_rot_z": 0.0,
@@ -89,13 +89,13 @@ default_offsets = {
     "left_scapula_joint_rot_x": 180.0,
     "left_scapula_joint_rot_y": 0.0,
     "left_scapula_joint_rot_z": 0.0,
-    "left_arm_upper_joint_offset_x": 0.0,
+    "left_arm_upper_joint_offset_x": 0.13,
     "left_arm_upper_joint_offset_y": 0.0,
     "left_arm_upper_joint_offset_z": 0.0,
     "left_arm_upper_joint_rot_x": 0.0,
     "left_arm_upper_joint_rot_y": 180.0,
     "left_arm_upper_joint_rot_z": 0.0,
-    "left_arm_lower_joint_offset_x": 0.0,
+    "left_arm_lower_joint_offset_x": 0.13,
     "left_arm_lower_joint_offset_y": 0.0,
     "left_arm_lower_joint_offset_z": 0.0,
     "left_arm_lower_joint_rot_x": 0.0,
@@ -167,13 +167,13 @@ default_offsets = {
     "right_scapula_joint_rot_x": 0.0,
     "right_scapula_joint_rot_y": 0.0,
     "right_scapula_joint_rot_z": 0.0,
-    "right_arm_upper_joint_offset_x": 0.0,
+    "right_arm_upper_joint_offset_x": 0.13,
     "right_arm_upper_joint_offset_y": 0.0,
     "right_arm_upper_joint_offset_z": 0.0,
     "right_arm_upper_joint_rot_x": 0.0,
     "right_arm_upper_joint_rot_y": 0.0,
     "right_arm_upper_joint_rot_z": 0.0,
-    "right_arm_lower_joint_offset_x": 0.0,
+    "right_arm_lower_joint_offset_x": 0.13,
     "right_arm_lower_joint_offset_y": 0.0,
     "right_arm_lower_joint_offset_z": 0.0,
     "right_arm_lower_joint_rot_x": 0.0,
@@ -235,7 +235,7 @@ default_offsets = {
     "right_foot_ball_joint_rot_z": 0.0
 }
 
-default_toggles = {
+default_misc_toggles = {
     "disable_knuckles_rendermodels": False,
     "use_trackpad_thumb": False
 }
@@ -245,18 +245,15 @@ default_misc = {
     "thumb_curl_full_threshold": 0.7,
     "other_fingers_curl_threshold": 0.075,
     "index_curl_touch_threshold": 0.45,
-    "trigger_click_threshold": 0.5,
-    "grip_force_threshold": 0.3
-}
-
-temp_offsets = {
-    "chest_joint_offset_x" : 0.03,
-    "chest_joint_offset_z" : -0.13,
-    "hips_joint_offset_z" : -0.1,
-    "left_arm_lower_joint_offset_x" : 0.13,
-    "left_arm_upper_joint_offset_x" : 0.13,
-    "right_arm_lower_joint_offset_x" : 0.13,
-    "right_arm_upper_joint_offset_x" : 0.13
+    "trigger_touch_curl_value": 0.2,
+    "trigger_click_threshold_hand": 0.5,
+    "trigger_click_threshold_controller": 0.8,
+    "grip_pinky_curl_threshold": 0.0,
+    "grip_ring_curl_threshold": 0.1,
+    "grip_middle_curl_threshold": 0.2,
+    "grip_force_threshold_hand": 0.3,
+    "grip_force_threshold_controller": 0.7,
+    "hysteresis": 0.15
 }
 
 tooltips_enabled = {
@@ -293,4 +290,25 @@ tooltips_enabled = {
     "right_foot_subtalar_joint_enabled": "Not recommended, default OFF",
     "right_foot_transverse_joint_enabled": "Left foot tracker, default ON",
     "right_foot_ball_joint_enabled": "Not recommended, default OFF"
+}
+
+tooltips_misc_toggles = {
+    "disable_knuckles_rendermodels": "Whether to keep using the Oculus Touch controller models even when emulating Index controllers.",
+    "use_trackpad_thumb": "Whether to use Trackpad or A/B touch events for simulating thumb actions."
+}
+
+tooltips_misc = {
+    "thumb_curl_threshold": "The threshold for simulating a Trackpad or A touch even based on the physical thumb curl.",
+    "thumb_curl_full_threshold": "The threshold for simulating a B touch even based on the physical thumb curl",
+    "other_fingers_curl_threshold": "The threshold for simulating index/middle/ring/pinky finger curl based on the corresponding physical finger curl.",
+    "index_curl_touch_threshold": "The threshold for simulating a trigger touch even based on the physical index curl.",
+    "trigger_touch_curl_value": "The value to simulate index finger curl when the controller's trigger touch is detected.\nAlso acts as a threshold for simulating index finger curl based on the physical index curl.",
+    "trigger_click_threshold_hand": "The threshold for simulating a trigger click event based on the trigger value, when using hands.",
+    "trigger_click_threshold_controller": "The threshold for simulating a trigger click event based on the trigger value, when using a controller.",
+    "grip_pinky_curl_threshold": "The threshold for simulating middle/ring/pinky finger curl based on the controller's grip value.",
+    "grip_ring_curl_threshold": "The threshold for simulating middle/ring/pinky finger curl based on the controller's grip value.",
+    "grip_middle_curl_threshold": "The threshold for simulating middle/ring/pinky finger curl based on the controller's grip value.",
+    "grip_force_threshold_hand": "The threshold for simulating grip force based on the grip value, when using hands.",
+    "grip_force_threshold_controller": "The threshold for simulating grip force based on the grip value, when using a controller.",
+    "hysteresis": "The hysteresis to use for all thresholds."
 }

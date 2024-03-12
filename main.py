@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QCheckBox, QGridLayout, QComboBox, QDoubleSpinBox, QTabWidget, QSpacerItem, QSizePolicy, QMessageBox, QStackedWidget
 import json
-from iobt_options import default_enabled, default_offsets, default_toggles, default_misc, temp_offsets, tooltips_enabled
+from iobt_options import default_enabled, default_offsets, default_misc_toggles, default_misc, tooltips_enabled, tooltips_misc_toggles, tooltips_misc
 import qdarktheme
 import os
 import subprocess
@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Virtual Desktop Body Tracking Configurator")
+        self.setWindowTitle("Virtual Desktop Body Tracking Configurator V1.7")
         
         if process_exists("vrserver.exe"):
             dlg2 = QMessageBox()
@@ -55,11 +55,11 @@ class MainWindow(QMainWindow):
         layoutTab3 = QVBoxLayout()
 
 
-        for variable in default_toggles:
+        for variable in default_misc_toggles:
             button = QCheckBox(variable.replace("_", " ").title())
             button.setCheckable(True)
-            button.setChecked(default_toggles.get(variable))
-            
+            button.setChecked(default_misc_toggles.get(variable))
+            button.setToolTip(tooltips_misc_toggles[variable])
             self.misc[variable] = button
             
             layoutTab3.addWidget(button)
@@ -72,7 +72,7 @@ class MainWindow(QMainWindow):
             box.setSingleStep(0.05)
             box.setDecimals(3)
             box.setValue(default_misc[variable])
-            
+            box.setToolTip(tooltips_misc[variable])
             self.misc[variable] = box
             
             layoutTab3.addWidget(box)      
@@ -109,7 +109,7 @@ class MainWindow(QMainWindow):
 
         self.load2 = QPushButton("Load Current Settings")
         self.load2.clicked.connect(self.load_settings_clicked)
-        self.layoutTab2.addWidget(self.load2, 4, 0)
+        self.layoutTab2.addWidget(self.load2, 3, 0)
 
         self.load3 = QPushButton("Load Current Settings")
         self.load3.clicked.connect(self.load_settings_clicked)
@@ -123,17 +123,12 @@ class MainWindow(QMainWindow):
         self.export2 = QPushButton("Apply Settings (All Pages)")
         self.export2.setStyleSheet("QPushButton {background-color: rgb(0,200,0); color: black} QPushButton:hover {background-color: rgb(0,200,150)}")
         self.export2.clicked.connect(self.export_clicked)
-        self.layoutTab2.addWidget(self.export2, 5, 0)
+        self.layoutTab2.addWidget(self.export2, 4, 0)
         
         self.export3 = QPushButton("Apply Settings (All Pages)")
         self.export3.setStyleSheet("QPushButton {background-color: rgb(0,200,0); color: black} QPushButton:hover {background-color: rgb(0,200,150)}")
         self.export3.clicked.connect(self.export_clicked)
         layoutTab3.addWidget(self.export3, 10)
-        
-        self.loadRecommended = QCheckBox("Apply Recommended Offsets\n(Does not override custom offsets)")
-        self.loadRecommended.setChecked(True)
-        self.loadRecommended.clicked.connect(self.checkbox_interacted)
-        self.layoutTab2.addWidget(self.loadRecommended, 3, 0)
         
         first = 0
         row = 3
@@ -180,16 +175,14 @@ class MainWindow(QMainWindow):
                     box.setMaximum(360)
                     box.setMinimum(-360)
                     box.setSingleStep(90)
-                    try:
-                        box.setValue(default_offsets[f"{variable[:-8]}_rot_{axis[-1].lower()}"])
-                    except:
-                        ()
+                    box.setValue(default_offsets[f"{variable[:-8]}_rot_{axis[-1].lower()}"])
+
                 else:
                     box.setSingleStep(0.01)
                     box.setMaximum(1)
                     box.setMinimum(-1)
-                    box.setDecimals(3)                    
-                
+                    box.setDecimals(3)  
+                    box.setValue(default_offsets[f"{variable[:-8]}_offset_{axis[-1].lower()}"])        
                 
                 self.offsets[variable][axis] = box
                 self.stackedwidgets[axis].addWidget(box)
@@ -293,7 +286,7 @@ class MainWindow(QMainWindow):
                     except:
                         ()
 
-                for variable in default_toggles:
+                for variable in default_misc_toggles:
                     try:
                         self.misc[variable].setChecked(current[variable])
                     except:
@@ -329,10 +322,6 @@ class MainWindow(QMainWindow):
 
         #print("Export clicked")
         export_dict = {}
-
-        if self.loadRecommended.isChecked():
-            for variable in temp_offsets:
-                export_dict[variable] = temp_offsets[variable]
                 
         for variable, checkbox in self.checkboxes.items():
            if default_enabled[variable] != checkbox.isChecked():
@@ -366,7 +355,7 @@ class MainWindow(QMainWindow):
             except:
                 ()
             try:
-                if default_toggles[variable] != input.isChecked():
+                if default_misc_toggles[variable] != input.isChecked():
                     export_dict[variable] = input.isChecked()
             except:
                 ()
