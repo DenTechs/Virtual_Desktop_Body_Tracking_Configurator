@@ -230,10 +230,10 @@ class MainWindow(QMainWindow):
 
     def tabChanged(self, index: int):
         if not self.miscOpened and index == 2:
-            dlg2 = QMessageBox()
-            dlg2.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
-            dlg2.setText(f"Do NOT modify miscellaneous options if you do not understand them!")
-            dlg2.exec()
+            dlg3 = QMessageBox()
+            dlg3.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
+            dlg3.setText(f"Do NOT modify miscellaneous options if you do not understand them!")
+            dlg3.exec()
             self.miscOpened = True 
           
     def offset_index_changed(self, index):
