@@ -48,6 +48,7 @@ class MainWindow(QMainWindow):
         self.misc = {}
         self.stackedwidgets = {}
         
+        self.miscOpened = False
         
         layoutTab1 = QGridLayout()
         self.layoutTab2 = QGridLayout()
@@ -217,6 +218,7 @@ class MainWindow(QMainWindow):
         widgetTab3.setLayout(layoutTab3)
 
         tabs = QTabWidget()
+        tabs.currentChanged.connect(self.tabChanged)
         tabs.setTabPosition(QTabWidget.TabPosition.North)
         tabs.setMovable(True)
 
@@ -225,6 +227,14 @@ class MainWindow(QMainWindow):
         tabs.addTab(widgetTab3, "Miscellaneous")
 
         self.setCentralWidget(tabs)
+
+    def tabChanged(self, index: int):
+        if not self.miscOpened and index == 2:
+            dlg2 = QMessageBox()
+            dlg2.setWindowTitle("Virtual Desktop Body Tracking Configurator")            
+            dlg2.setText(f"Do NOT modify miscellaneous options if you do not understand them!")
+            dlg2.exec()
+            self.miscOpened = True 
           
     def offset_index_changed(self, index):
         i=1
