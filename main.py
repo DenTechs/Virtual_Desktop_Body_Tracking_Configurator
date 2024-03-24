@@ -29,7 +29,7 @@ class MainWindow(QMainWindow):
             dlg2.setText("Error!\n\nvrserver.exe running!\n\nPlease close SteamVR and try again")
             dlg2.exec()
             if QMessageBox.StandardButton.Ok:
-                exit()
+                app.exit()
         
         self.steam = ""
         try:
@@ -41,7 +41,7 @@ class MainWindow(QMainWindow):
             dlg2.setText(f"Error: {e}")
             dlg2.exec()
             if QMessageBox.StandardButton.Ok:
-                exit()
+                app.exit()
       
         self.checkboxes = {}
         self.offsets = {}   
@@ -320,7 +320,7 @@ class MainWindow(QMainWindow):
                 dlg2.exec()
                 
                 if QMessageBox.StandardButton.Ok:
-                    exit()
+                    app.exit()
 
         
             
@@ -334,7 +334,7 @@ class MainWindow(QMainWindow):
             dlg2.setText("Error!\n\nvrserver.exe running!\n\nPlease close SteamVR and try again")
             dlg2.exec()
             if QMessageBox.StandardButton.Ok:
-                exit()
+                app.exit()
         
 
         #print("Export clicked")
