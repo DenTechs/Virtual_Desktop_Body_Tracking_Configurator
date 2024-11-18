@@ -70,14 +70,15 @@ class MainWindow(QMainWindow):
             box.setPrefix(f"{variable.replace('_', ' ').title()}: ")
             box.setMinimum(0)
             box.setMaximum(1)
+            if variable == "hand_data_debounce_time":
+                box.setMaximum(5)    
             box.setSingleStep(0.05)
             box.setDecimals(3)
             box.setValue(default_misc[variable])
             box.setToolTip(tooltips_misc[variable])
             self.misc[variable] = box
             
-            layoutTab3.addWidget(box)      
-
+            layoutTab3.addWidget(box)  
 
         
         spacer = QSpacerItem(20, 20, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)

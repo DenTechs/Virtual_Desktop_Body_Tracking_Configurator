@@ -237,7 +237,8 @@ default_offsets = {
 
 default_misc_toggles = {
     "disable_knuckles_rendermodels": False,
-    "use_trackpad_thumb": False
+    "use_trackpad_thumb": False,
+    "block_hand_menu_button": False
 }
 
 default_misc = {
@@ -253,7 +254,8 @@ default_misc = {
     "grip_middle_curl_threshold": 0.2,
     "grip_force_threshold_hand": 0.3,
     "grip_force_threshold_controller": 0.7,
-    "hysteresis": 0.15
+    "hysteresis": 0.15,
+    "hand_data_debounce_time": 1.5
 }
 
 tooltips_enabled = {
@@ -294,7 +296,8 @@ tooltips_enabled = {
 
 tooltips_misc_toggles = {
     "disable_knuckles_rendermodels": "Whether to keep using the Oculus Touch controller models even when emulating Index controllers.",
-    "use_trackpad_thumb": "Whether to use Trackpad or A/B touch events for simulating thumb actions."
+    "use_trackpad_thumb": "Whether to use Trackpad or A/B touch events for simulating thumb actions.",
+    "block_hand_menu_button": "In VRChat mode, block the menu gesture."
 }
 
 tooltips_misc = {
@@ -310,5 +313,6 @@ tooltips_misc = {
     "grip_middle_curl_threshold": "The threshold for simulating middle/ring/pinky finger curl based on the controller's grip value.",
     "grip_force_threshold_hand": "The threshold for simulating grip force based on the grip value, when using hands.",
     "grip_force_threshold_controller": "The threshold for simulating grip force based on the grip value, when using a controller.",
-    "hysteresis": "The hysteresis to use for all thresholds."
+    "hysteresis": "The hysteresis to use for all thresholds.",
+    "hand_data_debounce_time": "In VRChat mode, linger hand data for this number of seconds after loss of tracking."
 }
